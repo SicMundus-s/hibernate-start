@@ -9,7 +9,7 @@ import java.util.Optional;
 
 // Конвертор для преобразования типов кастомных данных для хибера
 @Convert
-public class BirthdayConvertor implements AttributeConverter<Birthday, Date> {
+public class BirthdayConverter implements AttributeConverter<Birthday, Date> {
 
     @Override
     public Date convertToDatabaseColumn(Birthday attribute) {
