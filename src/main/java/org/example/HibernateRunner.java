@@ -2,7 +2,8 @@ package org.example;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.entity.Birthday;
+import org.example.entity.Company;
+import org.example.entity.PersonalInfo;
 import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.util.BuildFactory;
@@ -11,7 +12,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 @Slf4j
 public class HibernateRunner {
@@ -24,12 +24,17 @@ public class HibernateRunner {
             Transaction transaction = session.beginTransaction();
             log.trace("Transaction is created, {}", transaction);
 
+            Company company = Company.builder()
+                    .name("Google")
+                    .build();
             User user = User.builder()
-                    .username("ivan@gmail.com")
-                    .firstname("Ivan")
-                    .lastname("Ivanov")
-                    .birthDay(new Birthday(LocalDate.of(2000, 1, 19)))
+                    .username("ivan@gmail.com1")
+                    .personalInfo(PersonalInfo.builder()
+                            .firstname("ivan")
+                            .lastname("petrov")
+                            .build())
                     .role(Role.ADMIN)
+                    .company(company)
                     .build();
             log.info("User entity is in transient state, object: {}", user);
 
@@ -38,8 +43,9 @@ public class HibernateRunner {
             User getUser1 = session.get(User.class, "ivan@gmail.com3"); // Запроса к БД не будет, так сущность в кэше
             user.setLastname("DirtySession"); // Все изменния в сущности отразятся на БД, хибернейт сделает доп запрос update
              */
+            session.persist(company);
             session.persist(user);
-            User user1 = session.get(User.class, "ivan@gmail.com");
+            User user1 = session.get(User.class, 1);
 
             session.evict(user1); // Удалить сущность из кэша
             session.clear(); // Очистить кэш

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.convertor.BirthdayConverter;
 
 @Data
 @NoArgsConstructor
@@ -16,15 +15,16 @@ import org.example.convertor.BirthdayConverter;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
-    private String firstname;
-    private String lastname;
-    @Column(name = "birth_date")
-    @Convert(converter = BirthdayConverter.class)
-    private Birthday birthDay;
+    @Embedded
+    @AttributeOverride(name = "birthDay", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
 
- //   @Type(JsonType.class)
- //   private String info;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @ManyToOne()
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
 }

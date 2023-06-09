@@ -29,7 +29,7 @@ public class BuildFactory {
         configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
         configuration.addAnnotatedClass(User.class);
         configuration.addAttributeConverter(new BirthdayConverter());
-        //configuration.registerTypeOverride(new JsonBinaryType());
+      //  configuration.registerTypeOverride(new JsonBinaryType());
         configuration.configure();
 
         return configuration.buildSessionFactory();

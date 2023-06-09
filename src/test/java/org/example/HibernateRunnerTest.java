@@ -1,4 +1,4 @@
-package com.dmdev;
+package org.example;
 
 
 import jakarta.persistence.Column;
